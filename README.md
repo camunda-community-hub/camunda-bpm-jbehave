@@ -17,6 +17,18 @@ _Check this video on BPM testing on [camunda community event Hamburg 2013](http:
 - Needle 2.2 integration
 - Execution as Maven Build
 
+<a name="resources"/>
+## Resources
+
+* [User Guide](./camunda-bpm-jbehave/README.md)
+* [API Docs](http://camunda.github.io/camunda-bpm-jbehave/apidocs/) 
+* [Issue Tracker](https://github.com/camunda/camunda-bpm-jbehave/issues) 
+* [Roadmap](https://github.com/camunda/camunda-bpm-jbehave/issues/milestones?state=open&with_issues=no) 
+* [Download](https://github.com/camunda/camunda-bpm-jbehave/releases)
+* [Continuous Integration](https://plexiti.ci.cloudbees.com/job/camunda-bpm-assert/job/camunda-bpm-assert/)
+* [Questions at camunda BPM users list](https://groups.google.com/forum/?fromgroups#!forum/camunda-bpm-users)
+* [Feedback at camunda BPM dev list](https://groups.google.com/forum/?fromgroups#!forum/camunda-bpm-dev)
+
 
 ## Maintainer
 
