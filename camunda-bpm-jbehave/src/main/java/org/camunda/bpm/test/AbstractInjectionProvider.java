@@ -1,7 +1,7 @@
 package org.camunda.bpm.test;
 
-import de.akquinet.jbosscc.needle.injection.InjectionProvider;
-import de.akquinet.jbosscc.needle.injection.InjectionTargetInformation;
+import org.needle4j.injection.InjectionProvider;
+import org.needle4j.injection.InjectionTargetInformation;
 
 /**
  * Abstract injection provider.

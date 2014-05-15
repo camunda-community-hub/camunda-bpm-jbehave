@@ -6,8 +6,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Sets;
-import de.akquinet.jbosscc.needle.injection.InjectionProvider;
 import org.camunda.bpm.test.CamundaSupportInjectionProvider;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -21,6 +19,9 @@ import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.PrintStreamStepMonitor;
 import org.jbehave.core.steps.needle.NeedleStepsFactory;
 import org.junit.runner.RunWith;
+import org.needle4j.injection.InjectionProvider;
+
+import com.google.common.collect.Sets;
 
 @RunWith(NeedleAnnotatedPathRunner.class)
 public abstract class JUnitTestBase extends JUnitStories {

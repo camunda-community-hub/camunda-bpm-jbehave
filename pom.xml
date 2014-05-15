@@ -10,7 +10,7 @@
     <parent>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-root</artifactId>
-        <version>7.0.0-Final</version>
+        <version>7.1.0-Final</version>
     </parent>
 
     <packaging>pom</packaging>
@@ -20,11 +20,11 @@
     </modules>
 
     <properties>
-        <jbehave.version>3.9</jbehave.version>
-        <camunda.version>7.0.0-Final</camunda.version>
+        <jbehave.version>3.10-SNAPSHOT</jbehave.version>
+        <camunda.version>7.1.0-Final</camunda.version>
         <camunda-bpm-needle.version>0.7-SNAPSHOT</camunda-bpm-needle.version>
         <camunda-bpm-assert.version>0.7-SNAPSHOT</camunda-bpm-assert.version>
-        <needle4j.version>2.3-SNAPSHOT</needle4j.version>
+        <needle4j.version>2.3</needle4j.version>
     </properties>
 
     <dependencies>
@@ -40,25 +40,33 @@
             <version>${camunda.version}</version>
         </dependency>
 
-
+<!-- 
         <dependency>
             <groupId>org.camunda.bpm.incubation</groupId>
             <artifactId>camunda-bpm-testing-core</artifactId>
             <version>0.6</version>
         </dependency>
+      
+ -->
 
         <dependency>
             <groupId>org.camunda.bpm.incubation</groupId>
-            <artifactId>camunda-bpm-fest-assertions</artifactId>
-            <version>0.6</version>
-        </dependency>
-
+            <artifactId>camunda-bpm-data</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>  
         <dependency>
-            <groupId>org.camunda.bpm.incubation</groupId>
+            <groupId>org.camunda.bpm.extension.test</groupId>
             <artifactId>camunda-bpm-needle</artifactId>
-            <version>0.6</version>
+            <version>0.7-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.camunda.bpm.extension</groupId>
+            <artifactId>camunda-bpm-assert</artifactId>
+            <version>1.0</version>
         </dependency>
 
+<!-- 
         <dependency>
             <groupId>org.camunda.bpm.incubation</groupId>
             <artifactId>camunda-bpm-assert</artifactId>
@@ -66,9 +74,13 @@
         </dependency>
         <dependency>
             <groupId>org.camunda.bpm.incubation</groupId>
-            <artifactId>camunda-bpm-data</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>camunda-bpm-fest-assertions</artifactId>
+            <version>0.6</version>
         </dependency>
+                
+
+        
+        -->
         <dependency>
             <groupId>org.jbehave</groupId>
             <artifactId>jbehave-needle</artifactId>
@@ -107,6 +119,13 @@
 
     <build>
         <plugins>
+             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
