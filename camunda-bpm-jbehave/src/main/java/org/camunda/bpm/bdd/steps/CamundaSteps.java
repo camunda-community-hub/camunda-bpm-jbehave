@@ -5,6 +5,7 @@ import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.ass
 
 import javax.inject.Inject;
 
+import org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.test.CamundaSupport;
 import org.jbehave.core.annotations.AfterStory;
@@ -30,6 +31,7 @@ public class CamundaSteps {
   @BeforeStory
   public void init() {
     LOG.debug("Initializing before a story run.");
+    ProcessEngineAssertions.init(support.getProcessEngine());
   }
 
   /**
@@ -41,6 +43,7 @@ public class CamundaSteps {
     Mocks.reset();
     support.undeploy();
     support.resetClock();
+    ProcessEngineAssertions.reset();
   }
 
   @When("the process definition $processDefinition")

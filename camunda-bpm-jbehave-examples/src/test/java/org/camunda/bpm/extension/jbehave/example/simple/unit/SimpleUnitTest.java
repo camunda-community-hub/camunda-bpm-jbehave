@@ -1,16 +1,13 @@
 package org.camunda.bpm.extension.jbehave.example.simple.unit;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.complete;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.withVariables;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -18,15 +15,13 @@ import javax.inject.Inject;
 import org.camunda.bpm.bdd.Slf4jLoggerRule;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.runtime.Execution;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.mock.Mocks;
-import org.camunda.bpm.extension.needle.ProcessEngineNeedleRule;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessAdapter;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessConstants;
+import org.camunda.bpm.extension.needle.ProcessEngineNeedleRule;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -82,7 +77,7 @@ public class SimpleUnitTest {
 
     public void startSimpleProcess() {
       processInstance = processEngine.getRuntimeService().startProcessInstanceByKey(SimpleProcessConstants.PROCESS);
-      assertNotNull(processInstance);
+      assertThat(processInstance).isNotNull();
       processInstanceId = processInstance.getProcessInstanceId();
     }
 
@@ -92,18 +87,6 @@ public class SimpleUnitTest {
       }
     }
 
-    /**
-     * Assert that process execution has run through the activity with given id.
-     * 
-     * @param name
-     *          name of the activity.
-     */
-    private void assertActivityVisitedOnce(final String name) {
-
-      final HistoricActivityInstance singleResult = processEngine.getHistoryService().createHistoricActivityInstanceQuery().finished().activityId(name)
-          .singleResult();
-      assertThat("activity '" + name + "' not found!", singleResult, notNullValue());
-    }
 
     /**
      * Assert process end event.
@@ -112,15 +95,11 @@ public class SimpleUnitTest {
      *          name of the end event.
      */
     private void assertEndEvent(final String name) {
-      assertActivityVisitedOnce(name);
-      assertTrue(processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult() == null);
-
+      assertThat(processInstance).hasPassed(name).isEnded();
     }
 
     public void waitsInManualProcessing() {
-      final Execution execution = processEngine.getRuntimeService().createExecutionQuery().processInstanceId(processInstanceId)
-          .activityId(SimpleProcessConstants.Elements.TASK_PROCESS_MANUALLY).singleResult();
-      assertNotNull(execution);
+      assertThat(processInstance).isWaitingAt(SimpleProcessConstants.Elements.TASK_PROCESS_MANUALLY);
     }
 
   }
@@ -178,13 +157,9 @@ public class SimpleUnitTest {
 
     // when
     final Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
-    final Map<String, Object> variables = new HashMap<String, Object>();
-    variables.put("processingErrorsPresent", Boolean.TRUE);
-    processEngine.getTaskService().complete(task.getId(), variables);
+    complete(task, withVariables("processingErrorsPresent", Boolean.TRUE));
 
-    // then
-    assertTrue("Instance not ended",
-        processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult() == null);
+    assertThat(processInstance).isEnded();
 
   }
 

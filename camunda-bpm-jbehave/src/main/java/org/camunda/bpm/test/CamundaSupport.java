@@ -1,30 +1,19 @@
 package org.camunda.bpm.test;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 import static org.camunda.bpm.engine.test.cfg.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.needle4j.injection.InjectionProviders.providerForInstance;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
-import org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions;
-import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
-import org.camunda.bpm.engine.test.cfg.MostUsefulProcessEngineConfiguration;
 import org.camunda.bpm.engine.test.mock.Mocks;
-import org.hamcrest.collection.IsEmptyCollection;
 import org.needle4j.injection.InjectionProvider;
 import org.needle4j.injection.InjectionTargetInformation;
 import org.slf4j.Logger;

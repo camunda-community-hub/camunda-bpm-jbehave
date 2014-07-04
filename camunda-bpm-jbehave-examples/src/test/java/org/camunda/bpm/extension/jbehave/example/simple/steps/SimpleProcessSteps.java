@@ -10,7 +10,6 @@ import static org.mockito.Mockito.doThrow;
 import javax.inject.Inject;
 
 import org.camunda.bpm.engine.delegate.BpmnError;
-import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessAdapter;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessConstants.Elements;
@@ -42,14 +41,12 @@ public class SimpleProcessSteps {
 
   @BeforeScenario
   public void initMocks() {
-    ProcessEngineTests.init(support.getProcessEngine());
     Mocks.register(SimpleProcessAdapter.NAME, simpleProcessAdapter);
   }
 
   @AfterScenario
   public void resetMocks() {
     Mockito.reset(simpleProcessAdapter);
-    ProcessEngineTests.reset();
   }
 
   @Given("the contract $verb automatically processible")
