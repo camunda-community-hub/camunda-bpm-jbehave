@@ -1,11 +1,10 @@
 package org.camunda.bpm.bdd.steps;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
 
 import javax.inject.Inject;
 
-import org.camunda.bpm.engine.runtime.Execution;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.test.CamundaSupport;
 import org.jbehave.core.annotations.AfterStory;
@@ -61,14 +60,13 @@ public class CamundaSteps {
    */
   @Then("the process is finished")
   public void processIsFinished() {
-    assertFalse("Process is not ended", support.hasRunningProcessInstance());
-    LOG.debug("Process finished.");
+    assertThat(support.getProcessInstance()).isEnded();
   }
 
   @Then("the process is finished with event $eventName")
   public void processFinishedSucessfully(final String eventName) {
-    assertFalse("Process is not ended", support.hasRunningProcessInstance());
-    support.assertActivityVisitedOnce(eventName);
+    processIsFinished();
+    assertThat(support.getProcessInstance()).hasPassed(eventName);
   }
 
   /**
@@ -80,9 +78,7 @@ public class CamundaSteps {
   @Then("the step $activityId is reached")
   @When("the step $activityId is reached")
   public void stepIsReached(final String activityId) {
-    final Execution execution = support.getProcessEngine().getRuntimeService().createExecutionQuery().processInstanceId(support.getProcessInstance().getId())
-        .activityId(activityId).singleResult();
-    assertNotNull("Expected step '" + activityId + "' is not reached!", execution);
+    assertThat(support.getProcessInstance()).isWaitingAt(activityId);
     LOG.debug("Step {} reached.", activityId);
   }
 }

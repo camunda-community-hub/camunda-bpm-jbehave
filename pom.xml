@@ -22,11 +22,13 @@
 
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <camunda.version>7.1.0-Final</camunda.version>
         <jbehave.version>3.9.3</jbehave.version>
         <camunda-bpm-needle.version>1.0-SNAPSHOT</camunda-bpm-needle.version>
         <camunda-bpm-assert.version>1.0</camunda-bpm-assert.version>
         <needle4j.version>2.3</needle4j.version>
+        <slf4j.version>1.7.2</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -56,12 +58,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
-            <version>1.7.2</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.2</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
@@ -76,7 +78,7 @@
 
         <dependency>
             <groupId>org.camunda.bpm.incubation</groupId>
-            <artifactId>camunda-bpm-data</artifactId>
+                <artifactId>camunda-bpm-data</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>  
         
@@ -84,6 +86,12 @@
             <groupId>org.camunda.bpm.extension</groupId>
             <artifactId>camunda-bpm-needle</artifactId>
             <version>${camunda-bpm-needle.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.camunda.bpm.extension</groupId>
+            <artifactId>camunda-bpm-assert</artifactId>
+            <version>${camunda-bpm-assert.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,9 +1,11 @@
 package org.camunda.bpm.test;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
+import static org.camunda.bpm.engine.test.cfg.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.needle4j.injection.InjectionProviders.providerForInstance;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -18,9 +20,13 @@ import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions;
+import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
 import org.camunda.bpm.engine.test.cfg.MostUsefulProcessEngineConfiguration;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.hamcrest.collection.IsEmptyCollection;
+import org.needle4j.injection.InjectionProvider;
+import org.needle4j.injection.InjectionTargetInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,24 +37,32 @@ import com.google.common.collect.Sets;
  * 
  * @author Simon Zambrovski, Holisticon AG
  */
-public class CamundaSupport {
+public class CamundaSupport implements InjectionProvider<CamundaSupport> {
 
-  /**
-   * Singleton instance.
-   */
-  private static CamundaSupport instance;
-
-  private static final Logger logger = LoggerFactory.getLogger(CamundaSupport.class);
+  private final Logger logger = LoggerFactory.getLogger(CamundaSupport.class);
+  private final InjectionProvider<CamundaSupport> injectionProviderDelegate = providerForInstance(this);
   private final Set<String> deploymentIds = Sets.newHashSet();
+
   private ProcessEngine processEngine;
   private Date startTime;
-  private String processInstanceId;
+  private ProcessInstance processInstance;
 
   /**
    * Private constructor to avoid direct instantiation.
    */
-  private CamundaSupport() {
-    this.processEngine = MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration().buildProcessEngine();
+  public CamundaSupport() {
+    this(mostUsefulProcessEngineConfiguration().buildProcessEngine());
+  }
+
+  /**
+   * Create support component
+   * 
+   * @param processEngine
+   */
+  public CamundaSupport(ProcessEngine processEngine) {
+    this.processEngine = processEngine;
+
+    logger.debug("Camunda Support created.");
   }
 
   /**
@@ -64,6 +78,8 @@ public class CamundaSupport {
     }
     this.deploymentIds.add(deploymentBuilder.deploy().getId());
     getStartTime();
+
+
   }
 
   /**
@@ -86,10 +102,9 @@ public class CamundaSupport {
    * @return process instance id
    * @see RuntimeService#startProcessInstanceByKey(String, Map)
    */
-  public String startProcessInstanceByKey(final String processDefinitionKey, final Map<String, Object> variables) {
+  public ProcessInstance startProcessInstanceByKey(final String processDefinitionKey, final Map<String, Object> variables) {
     checkArgument(processDefinitionKey != null, "processDefinitionKey must not be null!");
-    this.processInstanceId = processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables).getId();
-    return this.processInstanceId;
+    return processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
   }
 
   /**
@@ -99,7 +114,7 @@ public class CamundaSupport {
    *          process definition keys.
    * @return process instance id
    */
-  public String startProcessInstanceByKey(final String processDefinitionKey) {
+  public ProcessInstance startProcessInstanceByKey(final String processDefinitionKey) {
     return startProcessInstanceByKey(processDefinitionKey, null);
   }
 
@@ -109,7 +124,7 @@ public class CamundaSupport {
    * @return running process instance.
    */
   public ProcessInstance getProcessInstance() {
-    return processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(this.processInstanceId).singleResult();
+    return processInstance;
   }
 
   /**
@@ -127,19 +142,6 @@ public class CamundaSupport {
    */
   public void resetClock() {
     ClockUtil.reset();
-  }
-
-  /**
-   * Retrieves camunda support instance.
-   * 
-   * @return singleton instance.
-   */
-  public static CamundaSupport getInstance() {
-    if (instance == null) {
-      instance = new CamundaSupport();
-      logger.debug("Camunda Support created.");
-    }
-    return instance;
   }
 
   /**
@@ -161,54 +163,6 @@ public class CamundaSupport {
       this.startTime = new Date();
     }
     return this.startTime;
-  }
-
-  /**
-   * Retrieves process variables of running instance.
-   * 
-   * @return process variables.
-   */
-  public Map<String, Object> getProcessVariables() {
-    return getProcessVariables();
-  }
-
-  /**
-   * Checks historic execution.
-   * 
-   * @param id
-   *          activity name.
-   */
-  public void assertActivityVisitedOnce(final String id) {
-    final List<HistoricActivityInstance> visits = getProcessEngine().getHistoryService().createHistoricActivityInstanceQuery().finished().activityId(id).list();
-    assertThat("Expected element '" + id + "' not found!", visits, notNullValue());
-    assertThat("Expected element '" + id + "' not found!", visits, not(IsEmptyCollection.empty()));
-  }
-
-  /**
-   * finishes a task.
-   * 
-   * @param values
-   */
-  public void completeTask(final Object... values) {
-    final Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(this.processInstanceId).singleResult();
-    final Map<String, Object> valueMap = buildMap(values);
-    processEngine.getTaskService().complete(task.getId(), valueMap);
-
-  }
-
-  /**
-   * Parses a map from a object array with values key, value, key value
-   * 
-   * @param values
-   *          keys and values
-   * @return map representation
-   */
-  static Map<String, Object> buildMap(Object[] values) {
-    final Map<String, Object> map = new HashMap<String, Object>();
-    for (int i = 0; i < values.length; i++) {
-      map.put((String) values[i], values[++i]);
-    }
-    return map;
   }
 
   /**
@@ -235,4 +189,18 @@ public class CamundaSupport {
     return getProcessInstance() != null;
   }
 
+  @Override
+  public CamundaSupport getInjectedObject(Class<?> injectionPointType) {
+    return injectionProviderDelegate.getInjectedObject(injectionPointType);
+  }
+
+  @Override
+  public Object getKey(InjectionTargetInformation injectionTargetInformation) {
+    return injectionProviderDelegate.getKey(injectionTargetInformation);
+  }
+
+  @Override
+  public boolean verify(InjectionTargetInformation injectionTargetInformation) {
+    return injectionProviderDelegate.verify(injectionTargetInformation);
+  }
 }

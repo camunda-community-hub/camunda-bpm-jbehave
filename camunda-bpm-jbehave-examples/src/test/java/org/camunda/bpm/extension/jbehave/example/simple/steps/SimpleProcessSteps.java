@@ -1,11 +1,16 @@
 package org.camunda.bpm.extension.jbehave.example.simple.steps;
 
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.complete;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.task;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.withVariables;
 import static org.camunda.bpm.test.CamundaSupport.parseStatement;
 import static org.mockito.Mockito.doThrow;
 
 import javax.inject.Inject;
 
 import org.camunda.bpm.engine.delegate.BpmnError;
+import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessAdapter;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessConstants.Elements;
@@ -19,6 +24,8 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.mockito.Mockito;
+
+
 
 /**
  * Specific process steps.
@@ -35,12 +42,14 @@ public class SimpleProcessSteps {
 
   @BeforeScenario
   public void initMocks() {
+    ProcessEngineTests.init(support.getProcessEngine());
     Mocks.register(SimpleProcessAdapter.NAME, simpleProcessAdapter);
   }
 
   @AfterScenario
   public void resetMocks() {
     Mockito.reset(simpleProcessAdapter);
+    ProcessEngineTests.reset();
   }
 
   @Given("the contract $verb automatically processible")
@@ -60,22 +69,23 @@ public class SimpleProcessSteps {
 
   @Then("the contract is loaded")
   public void contractIsLoaded() {
-    support.assertActivityVisitedOnce(Elements.SERVICE_LOAD_CONTRACT_DATA);
+    assertThat(support.getProcessInstance()).hasPassed(Elements.SERVICE_LOAD_CONTRACT_DATA);
   }
 
   @Then("the contract is processed automatically")
   public void contractIsProcessed() {
-    support.assertActivityVisitedOnce(Elements.SERVICE_PROCESS_CONTRACT_AUTOMATICALLY);
+    assertThat(support.getProcessInstance()).hasPassed(Elements.SERVICE_PROCESS_CONTRACT_AUTOMATICALLY);
   }
 
   @Then("the contract processing is cancelled")
   public void cancelledProcessing() {
-    support.assertActivityVisitedOnce(Elements.SERVICE_CANCEL_PROCESSING);
+    assertThat(support.getProcessInstance()).hasPassed(Elements.SERVICE_CANCEL_PROCESSING);
   }
 
   @When("the contract is processed $withoutErrors")
-  public void processManuallys(final String withoutErrors) {
+  public void processManually(final String withoutErrors) {
     final boolean hasErrors = !parseStatement("with errors", withoutErrors, false);
-    support.completeTask(Variables.ARE_PROCESSING_ERRORS_PRESENT, Boolean.valueOf(hasErrors));
+
+    complete(task(), withVariables(Variables.ARE_PROCESSING_ERRORS_PRESENT, Boolean.valueOf(hasErrors)));
   }
 }

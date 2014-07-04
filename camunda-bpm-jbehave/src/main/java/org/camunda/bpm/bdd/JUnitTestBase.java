@@ -1,12 +1,15 @@
 package org.camunda.bpm.bdd;
 
 import static org.jbehave.core.io.CodeLocations.codeLocationFromPath;
+import static org.needle4j.injection.InjectionProviders.providerForInstance;
+import static org.needle4j.injection.InjectionProviders.providersToSet;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.camunda.bpm.test.CamundaSupportInjectionProvider;
+import org.camunda.bpm.test.CamundaSupport;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.failures.FailingUponPendingStep;
@@ -22,6 +25,7 @@ import org.junit.runner.RunWith;
 import org.needle4j.injection.InjectionProvider;
 
 import com.google.common.collect.Sets;
+import org.needle4j.injection.InjectionProviders;
 
 @RunWith(NeedleAnnotatedPathRunner.class)
 public abstract class JUnitTestBase extends JUnitStories {
@@ -61,12 +65,10 @@ public abstract class JUnitTestBase extends JUnitStories {
   /**
    * Retrieves the list of injection providers.
    * 
-   * @return list of injection providers, inlcuding the one for Camunda support.
+   * @return list of injection providers, including the one for Camunda support.
    */
   public Set<InjectionProvider<?>> getInjectionProviders() {
-    final Set<InjectionProvider<?>> result = Sets.newHashSet();
-    result.add(new CamundaSupportInjectionProvider());
-    return result;
+    return providersToSet(new CamundaSupport());
   }
 
 }
