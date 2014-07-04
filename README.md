@@ -10,11 +10,11 @@ _Check this video on BPM testing on [camunda community event Hamburg 2013](http:
 ## Roadmap
 
 **todo**
-- Switch to new Needle4J and JBehave using it
 
 **done**
+- Switch to new Needle4J and JBehave using it
 - JBehave 3.9 integration
-- Needle 2.2 integration
+- Needle 2.3 integration
 - Execution as Maven Build
 
 <a name="resources"/>
