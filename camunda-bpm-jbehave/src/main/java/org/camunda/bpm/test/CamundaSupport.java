@@ -11,23 +11,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Sets;
-import com.google.common.util.concurrent.CycleDetectingLockFactory.WithExplicitOrdering;
-
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.cdi.impl.ProcessVariableMap;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
-import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
 import org.camunda.bpm.engine.test.cfg.MostUsefulProcessEngineConfiguration;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Sets;
 
 /**
  * Helper for camunda access.
@@ -45,7 +42,7 @@ public class CamundaSupport {
   private final Set<String> deploymentIds = Sets.newHashSet();
   private ProcessEngine processEngine;
   private Date startTime;
-  private ProcessInstance processInstance;
+  private String processInstanceId;
 
   /**
    * Private constructor to avoid direct instantiation.
@@ -86,13 +83,13 @@ public class CamundaSupport {
    *          process definition keys.
    * @param variables
    *          maps of initial payload variables.
-   * @return process instance
+   * @return process instance id
    * @see RuntimeService#startProcessInstanceByKey(String, Map)
    */
-  public ProcessInstance startProcessInstanceByKey(final String processDefinitionKey, final Map<String, Object> variables) {
+  public String startProcessInstanceByKey(final String processDefinitionKey, final Map<String, Object> variables) {
     checkArgument(processDefinitionKey != null, "processDefinitionKey must not be null!");
-    processInstance = processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
-    return processInstance;
+    this.processInstanceId = processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables).getId();
+    return this.processInstanceId;
   }
 
   /**
@@ -100,9 +97,9 @@ public class CamundaSupport {
    * 
    * @param processDefinitionKey
    *          process definition keys.
-   * @return process instance
+   * @return process instance id
    */
-  public ProcessInstance startProcessInstanceByKey(final String processDefinitionKey) {
+  public String startProcessInstanceByKey(final String processDefinitionKey) {
     return startProcessInstanceByKey(processDefinitionKey, null);
   }
 
@@ -112,7 +109,7 @@ public class CamundaSupport {
    * @return running process instance.
    */
   public ProcessInstance getProcessInstance() {
-    return processInstance;
+    return processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(this.processInstanceId).singleResult();
   }
 
   /**
@@ -193,9 +190,10 @@ public class CamundaSupport {
    * @param values
    */
   public void completeTask(final Object... values) {
-    final Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
-    Map<String, Object> valueMap = buildMap(values);
+    final Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(this.processInstanceId).singleResult();
+    final Map<String, Object> valueMap = buildMap(values);
     processEngine.getTaskService().complete(task.getId(), valueMap);
+
   }
 
   /**
@@ -226,6 +224,15 @@ public class CamundaSupport {
    */
   public static boolean parseStatement(final String negation, final String value, final boolean defaultValue) {
     return (value != null) ? !value.contains(negation) : defaultValue;
+  }
+
+  /**
+   * Checks whether current process instance is still running.
+   * 
+   * @return true, if process instance is running
+   */
+  public boolean hasRunningProcessInstance() {
+    return getProcessInstance() != null;
   }
 
 }

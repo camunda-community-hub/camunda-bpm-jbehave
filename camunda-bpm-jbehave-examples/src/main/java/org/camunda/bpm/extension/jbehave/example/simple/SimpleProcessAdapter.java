@@ -14,4 +14,5 @@ public interface SimpleProcessAdapter {
     void processContract();
 
     void cancelProcessing();
+
 }

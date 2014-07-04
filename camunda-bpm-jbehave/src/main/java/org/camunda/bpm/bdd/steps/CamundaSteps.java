@@ -1,12 +1,11 @@
 package org.camunda.bpm.bdd.steps;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 
 import org.camunda.bpm.engine.runtime.Execution;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.test.CamundaSupport;
 import org.jbehave.core.annotations.AfterStory;
@@ -53,8 +52,8 @@ public class CamundaSteps {
 
   @When("the process $processKey is started")
   public void startProcess(final String processKey) {
-    final ProcessInstance processInstance = support.startProcessInstanceByKey(processKey);
-    assertNotNull("The process with the definitionKey '" + processKey + "' has not been started.", processInstance);
+    support.startProcessInstanceByKey(processKey);
+    // assertNotNull("The process with the definitionKey '" + processKey + "' has not been started.", support.getProcessInstance());
   }
 
   /**
@@ -62,14 +61,13 @@ public class CamundaSteps {
    */
   @Then("the process is finished")
   public void processIsFinished() {
-
-    assertTrue("Process is not ended", support.getProcessInstance().isEnded());
+    assertFalse("Process is not ended", support.hasRunningProcessInstance());
     LOG.debug("Process finished.");
   }
 
   @Then("the process is finished with event $eventName")
   public void processFinishedSucessfully(final String eventName) {
-    assertTrue("Process is not ended", support.getProcessInstance().isEnded());
+    assertFalse("Process is not ended", support.hasRunningProcessInstance());
     support.assertActivityVisitedOnce(eventName);
   }
 
