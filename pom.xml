@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.camunda.bpm.extension</groupId>
+    <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-jbehave-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -40,11 +40,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-           <dependency>
+            <dependency>
                 <groupId>org.camunda.bpm.extension</groupId>
                 <artifactId>camunda-bpm-jbehave</artifactId>
                 <version>${project.version}</version>
-           </dependency>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -76,12 +76,6 @@
             <artifactId>camunda-engine-cdi</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.camunda.bpm.incubation</groupId>
-                <artifactId>camunda-bpm-data</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>  
-        
         <dependency>
             <groupId>org.camunda.bpm.extension</groupId>
             <artifactId>camunda-bpm-needle</artifactId>
