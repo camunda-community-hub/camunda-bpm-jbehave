@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Sets;
 
 /**
- * Helper for camunda access.
+ * Helper for Camunda access.
  * 
  * @author Simon Zambrovski, Holisticon AG
  */
@@ -33,8 +33,8 @@ public class CamundaSupport implements InjectionProvider<CamundaSupport> {
   private final Set<String> deploymentIds = Sets.newHashSet();
 
   private ProcessEngine processEngine;
-  private Date startTime;
   private ProcessInstance processInstance;
+  private Date startTime;
 
   /**
    * Private constructor to avoid direct instantiation.
@@ -48,9 +48,8 @@ public class CamundaSupport implements InjectionProvider<CamundaSupport> {
    * 
    * @param processEngine
    */
-  public CamundaSupport(ProcessEngine processEngine) {
+  public CamundaSupport(final ProcessEngine processEngine) {
     this.processEngine = processEngine;
-
     logger.debug("Camunda Support created.");
   }
 
@@ -61,14 +60,12 @@ public class CamundaSupport implements InjectionProvider<CamundaSupport> {
    *          process definition file (BPMN)
    */
   public void deploy(final String... processModelResources) {
-    final DeploymentBuilder deploymentBuilder = processEngine.getRepositoryService().createDeployment();
+    final DeploymentBuilder deploymentBuilder = this.processEngine.getRepositoryService().createDeployment();
     for (final String resource : processModelResources) {
       deploymentBuilder.addClasspathResource(resource);
     }
     this.deploymentIds.add(deploymentBuilder.deploy().getId());
     getStartTime();
-
-
   }
 
   /**
@@ -76,7 +73,7 @@ public class CamundaSupport implements InjectionProvider<CamundaSupport> {
    */
   public void undeploy() {
     for (final String deploymentId : deploymentIds) {
-      processEngine.getRepositoryService().deleteDeployment(deploymentId, true);
+      this.processEngine.getRepositoryService().deleteDeployment(deploymentId, true);
     }
     Mocks.reset();
   }
@@ -93,7 +90,8 @@ public class CamundaSupport implements InjectionProvider<CamundaSupport> {
    */
   public ProcessInstance startProcessInstanceByKey(final String processDefinitionKey, final Map<String, Object> variables) {
     checkArgument(processDefinitionKey != null, "processDefinitionKey must not be null!");
-    return processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
+    this.processInstance = this.processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
+    return processInstance;
   }
 
   /**
@@ -134,7 +132,7 @@ public class CamundaSupport implements InjectionProvider<CamundaSupport> {
   }
 
   /**
-   * Retrieves activiti process engine.
+   * Retrieves process engine.
    * 
    * @return process engine.
    */
@@ -179,17 +177,17 @@ public class CamundaSupport implements InjectionProvider<CamundaSupport> {
   }
 
   @Override
-  public CamundaSupport getInjectedObject(Class<?> injectionPointType) {
+  public CamundaSupport getInjectedObject(final Class<?> injectionPointType) {
     return injectionProviderDelegate.getInjectedObject(injectionPointType);
   }
 
   @Override
-  public Object getKey(InjectionTargetInformation injectionTargetInformation) {
+  public Object getKey(final InjectionTargetInformation injectionTargetInformation) {
     return injectionProviderDelegate.getKey(injectionTargetInformation);
   }
 
   @Override
-  public boolean verify(InjectionTargetInformation injectionTargetInformation) {
+  public boolean verify(final InjectionTargetInformation injectionTargetInformation) {
     return injectionProviderDelegate.verify(injectionTargetInformation);
   }
 }

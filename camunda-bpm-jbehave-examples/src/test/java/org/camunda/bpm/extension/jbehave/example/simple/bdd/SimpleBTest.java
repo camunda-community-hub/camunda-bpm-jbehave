@@ -11,18 +11,19 @@ import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.annotations.needle.UsingNeedle;
 
 /**
- * JBehave tests for the org.camunda.bpm.extension.jbehave.example.simple process.
+ * JBehave Tests for the org.camunda.bpm.extension.jbehave.example.simple
+ * process.
  */
 @UsingSteps(instances = { SimpleProcessSteps.class, CamundaSteps.class })
 @UsingNeedle(provider = { CamundaSupport.class })
 public class SimpleBTest extends JBehaveTestBase {
-    @Override
-    protected URL getStoryLocation() {
-        return this.getClass().getResource("/");
-    }
+  @Override
+  protected URL getStoryLocation() {
+    return this.getClass().getResource("/");
+  }
 
-    @Override
-    protected List<String> storyPaths() {
-        return super.storyPaths();
-    }
+  @Override
+  protected List<String> storyPaths() {
+    return super.storyPaths();
+  }
 }

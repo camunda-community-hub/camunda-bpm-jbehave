@@ -10,6 +10,7 @@ import static org.mockito.Mockito.doThrow;
 import javax.inject.Inject;
 
 import org.camunda.bpm.engine.delegate.BpmnError;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessAdapter;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessConstants.Elements;
@@ -23,8 +24,6 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.mockito.Mockito;
-
-
 
 /**
  * Specific process steps.
@@ -66,7 +65,8 @@ public class SimpleProcessSteps {
 
   @Then("the contract is loaded")
   public void contractIsLoaded() {
-    assertThat(support.getProcessInstance()).hasPassed(Elements.SERVICE_LOAD_CONTRACT_DATA);
+    final ProcessInstance instance = support.getProcessInstance();
+    assertThat(instance).hasPassed(Elements.SERVICE_LOAD_CONTRACT_DATA);
   }
 
   @Then("the contract is processed automatically")
@@ -82,7 +82,6 @@ public class SimpleProcessSteps {
   @When("the contract is processed $withoutErrors")
   public void processManually(final String withoutErrors) {
     final boolean hasErrors = !parseStatement("with errors", withoutErrors, false);
-
     complete(task(), withVariables(Variables.ARE_PROCESSING_ERRORS_PRESENT, Boolean.valueOf(hasErrors)));
   }
 }
