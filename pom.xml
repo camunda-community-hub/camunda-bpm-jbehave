@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.camunda.bpm.extension</groupId>
+    <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-jbehave-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -38,11 +38,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-           <dependency>
+            <dependency>
                 <groupId>org.camunda.bpm.extension</groupId>
                 <artifactId>camunda-bpm-jbehave</artifactId>
                 <version>${project.version}</version>
-           </dependency>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -75,12 +75,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.camunda.bpm.incubation</groupId>
-            <artifactId>camunda-bpm-data</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>  
-        
-        <dependency>
             <groupId>org.camunda.bpm.extension</groupId>
             <artifactId>camunda-bpm-needle</artifactId>
             <version>${camunda-bpm-needle.version}</version>
@@ -92,15 +86,23 @@
             <id>camunda-bpm-community-extensions</id>
             <name>camunda BPM Snapshot Maven Repository</name>
             <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>camunda-bpm-community-extensions-snapshots</id>
             <name>camunda BPM Snapshot Maven Repository</name>
             <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions-snapshots</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -158,9 +160,8 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <!--<overwriteReleases>false</overwriteReleases>
-                            <overwriteSnapshots>true</overwriteSnapshots>
-                            // -->
+                            <!--<overwriteReleases>false</overwriteReleases> 
+                                <overwriteSnapshots>true</overwriteSnapshots> // -->
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.jbehave.site</groupId>
@@ -181,10 +182,8 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <!--
-                            <overwriteReleases>false</overwriteReleases>
-                            <overwriteSnapshots>true</overwriteSnapshots>
-                            // -->
+                            <!-- <overwriteReleases>false</overwriteReleases> 
+                                <overwriteSnapshots>true</overwriteSnapshots> // -->
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.jbehave</groupId>
