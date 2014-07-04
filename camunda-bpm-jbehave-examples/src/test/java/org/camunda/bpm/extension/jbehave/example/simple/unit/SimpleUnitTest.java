@@ -24,7 +24,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.mock.Mocks;
-import org.camunda.bpm.engine.test.needle.ProcessEngineNeedleRule;
+import org.camunda.bpm.extension.needle.ProcessEngineNeedleRule;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessAdapter;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessConstants;
 import org.junit.Before;

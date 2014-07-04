@@ -11,7 +11,7 @@
         <groupId>org.camunda</groupId>
         <artifactId>camunda-release-parent</artifactId>
         <version>2.2</version>
-		<relativePath />
+        <relativePath />
     </parent>
 
     <packaging>pom</packaging>
@@ -22,11 +22,11 @@
 
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jbehave.version>3.10-SNAPSHOT</jbehave.version>
-        <camunda-bpm-needle.version>0.7-SNAPSHOT</camunda-bpm-needle.version>
+        <camunda.version>7.1.0-Final</camunda.version>
+        <jbehave.version>3.9.3</jbehave.version>
+        <camunda-bpm-needle.version>1.0-SNAPSHOT</camunda-bpm-needle.version>
         <camunda-bpm-assert.version>1.0</camunda-bpm-assert.version>
         <needle4j.version>2.3</needle4j.version>
-		<camunda.version>7.1.0-Final</camunda.version>
     </properties>
 
     <dependencyManagement>
@@ -38,16 +38,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-			<dependency>
-				<groupId>org.camunda.bpm.extension</groupId>
-				<artifactId>camunda-bpm-jbehave</artifactId>
-				<version>${project.version}</version>
-			</dependency>			
+           <dependency>
+                <groupId>org.camunda.bpm.extension</groupId>
+                <artifactId>camunda-bpm-jbehave</artifactId>
+                <version>${project.version}</version>
+           </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-		<dependency>
+        <dependency>
             <groupId>org.jbehave</groupId>
             <artifactId>jbehave-needle</artifactId>
             <version>${jbehave.version}</version>
@@ -63,45 +63,45 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.2</version>
         </dependency>
-			
-		<dependency>
+
+        <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
-            <version>${camunda.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine-cdi</artifactId>
-            <version>${camunda.version}</version>
         </dependency>
-		
+
         <dependency>
             <groupId>org.camunda.bpm.incubation</groupId>
             <artifactId>camunda-bpm-data</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>  
         
-		<dependency>
-            <groupId>org.camunda.bpm.extension.test</groupId>
+        <dependency>
+            <groupId>org.camunda.bpm.extension</groupId>
             <artifactId>camunda-bpm-needle</artifactId>
             <version>${camunda-bpm-needle.version}</version>
         </dependency>
     </dependencies>
+
     <repositories>
         <repository>
-            <id>camunda-bpm-snapshot</id>
+            <id>camunda-bpm-community-extensions</id>
+            <name>camunda BPM Snapshot Maven Repository</name>
+            <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>camunda-bpm-community-extensions-snapshots</id>
             <name>camunda BPM Snapshot Maven Repository</name>
             <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions-snapshots</url>
-			<releases><enabled>false</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>			
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
         </repository>
- 	    <repository>
-            <id>camunda-bpm-nexus</id>
-            <name>camunda BPM Maven Repository</name>
-            <url>https://app.camunda.com/nexus/content/groups/public</url>
-        </repository>
-		
     </repositories>
 
     <build>
