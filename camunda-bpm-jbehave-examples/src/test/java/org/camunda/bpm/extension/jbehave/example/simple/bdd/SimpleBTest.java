@@ -11,8 +11,7 @@ import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.annotations.needle.UsingNeedle;
 
 /**
- * JBehave Tests for the org.camunda.bpm.extension.jbehave.example.simple
- * process.
+ * JBehave Tests for processes.
  */
 @UsingSteps(instances = { SimpleProcessSteps.class, CamundaSteps.class })
 @UsingNeedle(provider = { CamundaSupport.class })
