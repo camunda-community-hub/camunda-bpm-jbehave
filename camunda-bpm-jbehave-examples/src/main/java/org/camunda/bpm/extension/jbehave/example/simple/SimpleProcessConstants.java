@@ -12,6 +12,11 @@ public class SimpleProcessConstants {
    */
   public static final String BPMN = "simple.bpmn";
   /**
+   * Name and location of process definition.
+   */
+  public static final String BPMN_DURABLE = "durable.bpmn";
+
+  /**
    * Process Key.
    */
   public static final String PROCESS = "simple-process";

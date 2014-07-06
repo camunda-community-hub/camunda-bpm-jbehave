@@ -9,9 +9,9 @@ _Check this video on BPM testing on [camunda community event Hamburg 2013](http:
 
 ## Roadmap
 
-**todo**
+- Integrate with better Eclipse runner
 
-**done**
+## News and Noteworthy
 - Switch to new Needle4J and JBehave using it
 - JBehave 3.9 integration
 - Needle 2.3 integration

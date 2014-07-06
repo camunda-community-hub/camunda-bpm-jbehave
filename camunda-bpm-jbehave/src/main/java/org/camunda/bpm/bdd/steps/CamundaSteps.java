@@ -1,6 +1,5 @@
 package org.camunda.bpm.bdd.steps;
 
-
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
 
 import javax.inject.Inject;
@@ -17,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Generic Camunda Steps.
+ * Generic Steps to control Camunda BPM from the test.
  * 
  * @author Simon Zambrovski, Holisticon AG.
  */
@@ -55,7 +54,6 @@ public class CamundaSteps {
   @When("the process $processKey is started")
   public void startProcess(final String processKey) {
     support.startProcessInstanceByKey(processKey);
-    // assertNotNull("The process with the definitionKey '" + processKey + "' has not been started.", support.getProcessInstance());
   }
 
   /**

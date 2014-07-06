@@ -22,6 +22,11 @@ import org.jbehave.core.steps.PrintStreamStepMonitor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Base class for JBehave tests.
+ * 
+ * @author Simon Zambrovski, holisticon AG
+ */
 @RunWith(NeedleAnnotatedEmbedderRunner.class)
 @UsingEmbedder(embedder = Embedder.class, generateViewAfterStories = true, ignoreFailureInStories = true, ignoreFailureInView = true, verboseFailures = true)
 @Configure(stepMonitor = PrintStreamStepMonitor.class, pendingStepStrategy = FailingUponPendingStep.class, stepdocReporter = PrintStreamStepdocReporter.class, storyReporterBuilder = JBehaveTestBase.RichReporterBuilder.class)
@@ -29,9 +34,9 @@ public abstract class JBehaveTestBase extends InjectableEmbedder {
 
   private static final boolean REPORT_FAILURE_TRACE = false;
   private static final boolean COMPRESS_FAILURE_TRACE = true;
-    static {
-        Slf4jLoggerRule.DEFAULT.before();
-    }
+  static {
+    Slf4jLoggerRule.DEFAULT.before();
+  }
 
   /**
    * Retrieves the location of the stories. <br>
@@ -58,7 +63,7 @@ public abstract class JBehaveTestBase extends InjectableEmbedder {
   }
 
   /**
-   * Report builder.
+   * Own report builder.
    */
   public static class RichReporterBuilder extends StoryReporterBuilder {
 

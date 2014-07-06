@@ -18,13 +18,29 @@ import org.camunda.bpm.engine.delegate.TaskListener;
 public class TaskGuard implements TaskListener, Guard, Serializable {
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Empty implementation of pre-condition checks. <br />
+   * Override this method to implement your own. Please throw
+   * {@link IllegalStateException} on contract violations.
+   */
   public void checkPostconditions(DelegateExecution execution) throws IllegalStateException {
   }
 
+  /**
+   * Empty implementation of post-condition checks. <br />
+   * Override this method to implement your own. Please throw
+   * {@link IllegalStateException} on contract violations.
+   */
   public void checkPreconditions(DelegateExecution execution) throws IllegalStateException {
   }
 
-  public void notify(DelegateTask delegateTask) {
+  /**
+   * Implementation of the event dispatching.
+   * 
+   * @param delegateExecution
+   *          process execution
+   */
+  public final void notify(DelegateTask delegateTask) {
     Guards.dispatch(this, delegateTask.getEventName(), delegateTask.getExecution());
   }
 }

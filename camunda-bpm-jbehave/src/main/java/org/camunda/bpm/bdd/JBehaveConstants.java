@@ -1,5 +1,8 @@
 package org.camunda.bpm.bdd;
 
+/**
+ * Constants for JBehave configuration.  
+ */
 public enum JBehaveConstants {
   ;
   public static final boolean COMPRESS_FAILURE_TRACE = true;

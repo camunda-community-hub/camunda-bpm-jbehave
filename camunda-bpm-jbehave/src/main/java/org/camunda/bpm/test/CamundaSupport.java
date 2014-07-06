@@ -37,16 +37,17 @@ public class CamundaSupport implements InjectionProvider<CamundaSupport> {
   private Date startTime;
 
   /**
-   * Private constructor to avoid direct instantiation.
+   * Create support component with default process engine.
    */
   public CamundaSupport() {
     this(mostUsefulProcessEngineConfiguration().buildProcessEngine());
   }
 
   /**
-   * Create support component
+   * Create support component.
    * 
    * @param processEngine
+   *          process engine.
    */
   public CamundaSupport(final ProcessEngine processEngine) {
     this.processEngine = processEngine;

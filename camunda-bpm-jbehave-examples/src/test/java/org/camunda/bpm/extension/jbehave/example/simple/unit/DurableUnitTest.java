@@ -22,18 +22,17 @@ import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessAdapter;
 import org.camunda.bpm.extension.jbehave.example.simple.SimpleProcessConstants;
 import org.camunda.bpm.extension.needle.ProcessEngineNeedleRule;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 /**
- * Unit test of simple process.
+ * Unit test durable process.
  * 
  * @author Simon Zambrovski, Holisticon AG.
  */
-public class SimpleUnitTest {
+public class DurableUnitTest {
 
   static {
     Slf4jLoggerRule.DEFAULT.before();
@@ -118,28 +117,13 @@ public class SimpleUnitTest {
   }
 
   @Test
-  @Deployment(resources = SimpleProcessConstants.BPMN)
+  @Deployment(resources = SimpleProcessConstants.BPMN_DURABLE)
   public void shouldDeploy() {
     // nothing to do.
   }
 
   @Test
-  @Deployment(resources = SimpleProcessConstants.BPMN)
-  public void shouldStartAndWaitForManual() {
-
-    // given
-    glue.loadContractData(false);
-
-    // when
-    glue.startSimpleProcess();
-
-    // then
-    glue.waitsInManualProcessing();
-  }
-
-  @Test
-  @Ignore
-  @Deployment(resources = SimpleProcessConstants.BPMN)
+  @Deployment(resources = SimpleProcessConstants.BPMN_DURABLE)
   public void shouldStartProcessAutomaticallyAndWaitForManual() {
 
     // given
@@ -154,7 +138,7 @@ public class SimpleUnitTest {
   }
 
   @Test
-  @Deployment(resources = SimpleProcessConstants.BPMN)
+  @Deployment(resources = SimpleProcessConstants.BPMN_DURABLE)
   public void shouldStartAndRunAutomatically() {
 
     // given
@@ -169,7 +153,7 @@ public class SimpleUnitTest {
   }
 
   @Test
-  @Deployment(resources = SimpleProcessConstants.BPMN)
+  @Deployment(resources = SimpleProcessConstants.BPMN_DURABLE)
   public void shouldProcessContractManuallySuccessfully() {
     // given
     glue.loadContractData(false);
@@ -184,7 +168,7 @@ public class SimpleUnitTest {
   }
 
   @Test
-  @Deployment(resources = SimpleProcessConstants.BPMN)
+  @Deployment(resources = SimpleProcessConstants.BPMN_DURABLE)
   public void shouldProcessContractManuallyAndCancel() {
     // given
     glue.loadContractData(false);

@@ -22,9 +22,14 @@ import org.jbehave.core.steps.needle.NeedleStepsFactory;
 import org.junit.runner.RunWith;
 import org.needle4j.injection.InjectionProvider;
 
+/**
+ * Base class for JUnit based tests.
+ * @author Simon Zambrovski, holisticon AG
+ *
+ */
 @RunWith(NeedleAnnotatedPathRunner.class)
 public abstract class JUnitTestBase extends JUnitStories {
-  
+
   static {
     Slf4jLoggerRule.DEFAULT.before();
   }
