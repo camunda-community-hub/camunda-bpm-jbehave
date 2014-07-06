@@ -32,7 +32,7 @@ public class SimpleBTest extends JBehaveTestBase {
 
 Please note, that the `UsingSteps` annotation is listing classes containing the glue steps. 
 
-![Simple Process](https://github.com/camunda/camunda-bpm-jbehave/blob/master/camunda-bpm-jbehave-examples/src/main/resources/simple.png)
+![Simple Process](https://raw.githubusercontent.com/camunda/camunda-bpm-jbehave/master/camunda-bpm-jbehave-examples/src/main/resources/simple.png)
 
 
 The story definition looks as following:
