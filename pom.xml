@@ -202,4 +202,29 @@
             </plugin>
         </plugins>
     </build>
+    
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    
+    <scm>
+        <connection>scm:git:git@github.com:camunda/camunda-bpm-jbehave.git</connection>
+        <url>scm:git:git@github.com:camunda/camunda-bpm-jbehave.git</url>
+        <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-jbehave.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>camunda-nexus</id>
+            <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions-snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>camunda-nexus</id>
+            <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions</url>
+        </repository>
+    </distributionManagement>
 </project>
