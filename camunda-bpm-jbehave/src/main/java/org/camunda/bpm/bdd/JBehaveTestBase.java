@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
  * @author Simon Zambrovski, holisticon AG
  */
 @RunWith(NeedleAnnotatedEmbedderRunner.class)
-@UsingEmbedder(embedder = Embedder.class, generateViewAfterStories = true, ignoreFailureInStories = true, ignoreFailureInView = true, verboseFailures = true)
+@UsingEmbedder(embedder = Embedder.class, generateViewAfterStories = true, ignoreFailureInStories = false, ignoreFailureInView = false, verboseFailures = true)
 @Configure(stepMonitor = PrintStreamStepMonitor.class, pendingStepStrategy = FailingUponPendingStep.class, stepdocReporter = PrintStreamStepdocReporter.class, storyReporterBuilder = JBehaveTestBase.RichReporterBuilder.class)
 public abstract class JBehaveTestBase extends InjectableEmbedder {
 
