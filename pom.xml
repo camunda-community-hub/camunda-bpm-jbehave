@@ -109,6 +109,7 @@
                         <exclude>**/*BTest.java</exclude>
                         <exclude>**/btest/*.java</exclude>
                     </excludes>
+                    <runOrder>random</runOrder>
                 </configuration>
             </plugin>
             <plugin>
