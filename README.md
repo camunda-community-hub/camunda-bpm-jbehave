@@ -1,5 +1,7 @@
 # _Camunda-BPM-JBehave_
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-jbehave/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-jbehave)
+
 _Business Processes are no units and should be tested using behavior specifications. Camunda-BPM-JBehave is set of
 libraries allowing to use a famous BDD framework [JBehave](http://jbehave.org/) for testing of processes using Camunda BPM embedded engine._
 
