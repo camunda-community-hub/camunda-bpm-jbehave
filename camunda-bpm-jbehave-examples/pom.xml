@@ -7,7 +7,7 @@
     <parent>
         <artifactId>camunda-bpm-jbehave-parent</artifactId>
         <groupId>org.camunda.bpm.extension</groupId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
