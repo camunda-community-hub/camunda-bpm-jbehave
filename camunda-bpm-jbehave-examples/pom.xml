@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>camunda-bpm-jbehave-examples</artifactId>
+  <groupId>org.camunda.bpm.extension.jbehave.example</groupId>
+  <artifactId>camunda-bpm-jbehave-examples</artifactId>
 
-    <parent>
-        <artifactId>camunda-bpm-jbehave-parent</artifactId>
-        <groupId>org.camunda.bpm.extension</groupId>
-        <version>1.1-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <groupId>org.camunda.bpm.extension.jbehave.project</groupId>
+    <artifactId>camunda-bpm-jbehave-root</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.camunda.bpm.extension</groupId>
-            <artifactId>camunda-bpm-jbehave</artifactId>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.camunda.bpm.extension.jbehave</groupId>
+      <artifactId>camunda-bpm-jbehave</artifactId>
+    </dependency>
+  </dependencies>
 </project>
