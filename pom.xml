@@ -22,7 +22,7 @@
 
   <properties>
     <camunda.version>7.5.0</camunda.version>
-    <jbehave.version>3.9.3</jbehave.version>
+    <jbehave.version>4.0.5</jbehave.version>
     <camunda-bpm-needle.version>1.1</camunda-bpm-needle.version>
     <slf4j.version>1.7.2</slf4j.version>
   </properties>
@@ -78,12 +78,6 @@
       <version>${camunda-bpm-needle.version}</version>
     </dependency>
 
-
-    <dependency>
-      <groupId>org.camunda.bpm.extension</groupId>
-      <artifactId>camunda-bpm-assert</artifactId>
-      <version>${camunda-bpm-assert.version}</version>
-    </dependency>
   </dependencies>
 
   <build>
