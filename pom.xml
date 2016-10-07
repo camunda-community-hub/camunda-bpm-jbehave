@@ -17,14 +17,13 @@
   <packaging>pom</packaging>
   <modules>
     <module>camunda-bpm-jbehave</module>
-    <module>camunda-bpm-jbehave-examples</module>
+    <module>examples</module>
   </modules>
 
   <properties>
     <camunda.version>7.5.0</camunda.version>
     <jbehave.version>3.9.3</jbehave.version>
-    <camunda-bpm-needle.version>1.0</camunda-bpm-needle.version>
-    <camunda-bpm-assert.version>1.2</camunda-bpm-assert.version>
+    <camunda-bpm-needle.version>1.1</camunda-bpm-needle.version>
     <slf4j.version>1.7.2</slf4j.version>
   </properties>
 
