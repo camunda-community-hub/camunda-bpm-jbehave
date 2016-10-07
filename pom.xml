@@ -20,10 +20,10 @@
     </modules>
 
     <properties>
-        <camunda.version>7.1.0-Final</camunda.version>
+        <camunda.version>7.5.0</camunda.version>
         <jbehave.version>3.9.3</jbehave.version>
         <camunda-bpm-needle.version>1.0</camunda-bpm-needle.version>
-        <camunda-bpm-assert.version>1.1</camunda-bpm-assert.version>
+        <camunda-bpm-assert.version>1.2</camunda-bpm-assert.version>
         <slf4j.version>1.7.2</slf4j.version>
     </properties>
 
@@ -175,21 +175,21 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    
+
     <scm>
         <connection>scm:git:git@github.com:camunda/camunda-bpm-jbehave.git</connection>
         <url>scm:git:git@github.com:camunda/camunda-bpm-jbehave.git</url>
         <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-jbehave.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-    
+
     <distributionManagement>
         <snapshotRepository>
             <id>camunda-nexus</id>

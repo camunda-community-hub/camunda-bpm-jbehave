@@ -1,206 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_wKfrAJm0EeOXL_SaW3Xn-w" targetNamespace="http://activiti.org/bpmn">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="_wKfrAJm0EeOXL_SaW3Xn-w" targetNamespace="http://camunda.org/schema/1.0/bpmn" exporter="Camunda Modeler" exporterVersion="1.3.2" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
   <bpmn2:collaboration id="_Collaboration_3">
-    <bpmn2:participant id="simple_process" name="contract processing" processRef="simple-process"/>
+    <bpmn2:participant id="simple_process" name="contract processing" processRef="simple-process" />
   </bpmn2:collaboration>
   <bpmn2:process id="simple-process" name="simple-process" isExecutable="true">
-    <bpmn2:startEvent id="start_process" name="Contract&#xD;&#xA;received">
+    <bpmn2:startEvent id="start_process" name="Contract&#10;received">
       <bpmn2:outgoing>flow_start_load</bpmn2:outgoing>
     </bpmn2:startEvent>
     <bpmn2:endEvent id="event_contract_processed" name="Contract processed">
       <bpmn2:incoming>flow_contract_processed</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:sequenceFlow id="flow_start_load" name="" sourceRef="start_process" targetRef="service_load_contract_data"/>
-    <bpmn2:serviceTask id="service_load_contract_data" camunda:expression="#{simpleProcessAdapter.loadContractData(execution)}" camunda:resultVariable="isAutomaticProcessing" name="Load&#xA;contract&#xA;data">
+    <bpmn2:serviceTask id="service_load_contract_data" name="Load&#10;contract&#10;data" camunda:expression="#{simpleProcessAdapter.loadContractData(execution)}" camunda:resultVariable="isAutomaticProcessing">
       <bpmn2:extensionElements>
-        <camunda:executionListener class="org.camunda.bdd.examples.simple.guard.AutomaticProcessingGuard" event="end"/>
+        <camunda:executionListener class="org.camunda.bdd.examples.simple.guard.AutomaticProcessingGuard" event="end" />
       </bpmn2:extensionElements>
       <bpmn2:incoming>flow_start_load</bpmn2:incoming>
       <bpmn2:outgoing>flow_load_possible</bpmn2:outgoing>
     </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="flow_load_possible" name="" sourceRef="service_load_contract_data" targetRef="exclusive_is_processing_automatically"/>
-    <bpmn2:exclusiveGateway id="exclusive_is_processing_automatically" name="Automatic&#xD;&#xA;processing&#xD;&#xA;possible?" default="flow_automatic_processing_no">
+    <bpmn2:exclusiveGateway id="exclusive_is_processing_automatically" name="Automatic&#10;processing&#10;possible?" default="flow_automatic_processing_no">
       <bpmn2:incoming>flow_load_possible</bpmn2:incoming>
       <bpmn2:outgoing>flow_automatic_processing_yes</bpmn2:outgoing>
       <bpmn2:outgoing>flow_automatic_processing_no</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="flow_automatic_processing_yes" name="yes" sourceRef="exclusive_is_processing_automatically" targetRef="service_process_contract_automatically">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">#{isAutomaticProcessing}</bpmn2:conditionExpression>
-    </bpmn2:sequenceFlow>
-    <bpmn2:serviceTask id="service_process_contract_automatically" camunda:expression="#{simpleProcessAdapter.processContract()}" name="Process&#xD;&#xA;contract&#xD;&#xA;automatically">
+    <bpmn2:serviceTask id="service_process_contract_automatically" name="Process&#10;contract&#10;automatically" camunda:expression="#{simpleProcessAdapter.processContract()}">
       <bpmn2:incoming>flow_automatic_processing_yes</bpmn2:incoming>
       <bpmn2:outgoing>flow_automatic_succeeds</bpmn2:outgoing>
     </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="flow_automatic_succeeds" name="" sourceRef="service_process_contract_automatically" targetRef="join_contract_processed_path"/>
     <bpmn2:exclusiveGateway id="join_contract_processed_path">
       <bpmn2:incoming>flow_automatic_succeeds</bpmn2:incoming>
       <bpmn2:incoming>flow_is_processed_yes</bpmn2:incoming>
       <bpmn2:outgoing>flow_contract_processed</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="flow_contract_processed" name="" sourceRef="join_contract_processed_path" targetRef="event_contract_processed"/>
-    <bpmn2:userTask id="task_process_contract_manually" camunda:formKey="processContractManually.xhtml" name="Process&#xD;&#xA;contract&#xD;&#xA;manually">
-      <bpmn2:incoming>flow_automatic_processing_no</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-      <bpmn2:outgoing>flow_manually_is_processed</bpmn2:outgoing>
-    </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="flow_automatic_processing_no" name="no" sourceRef="exclusive_is_processing_automatically" targetRef="task_process_contract_manually"/>
     <bpmn2:exclusiveGateway id="exclusive_is_processed" name="Is processed?" default="flow_is_processed_yes">
       <bpmn2:incoming>flow_manually_is_processed</bpmn2:incoming>
       <bpmn2:outgoing>flow_is_processed_yes</bpmn2:outgoing>
       <bpmn2:outgoing>flow_is_processed_no</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="flow_manually_is_processed" name="" sourceRef="task_process_contract_manually" targetRef="exclusive_is_processed"/>
-    <bpmn2:sequenceFlow id="flow_is_processed_yes" name="yes" sourceRef="exclusive_is_processed" targetRef="join_contract_processed_path"/>
-    <bpmn2:serviceTask id="service_cancel_contract_processing" camunda:expression="#{simpleProcessAdapter.cancelProcessing()}" name="Cancel&#xD;&#xA;contract&#xD;&#xA;processing">
-      <bpmn2:incoming>flow_is_processed_no</bpmn2:incoming>
-      <bpmn2:outgoing>flow_contract_cancelled</bpmn2:outgoing>
-    </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="flow_is_processed_no" name="no" sourceRef="exclusive_is_processed" targetRef="service_cancel_contract_processing">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">#{processingErrorsPresent}</bpmn2:conditionExpression>
-    </bpmn2:sequenceFlow>
     <bpmn2:endEvent id="event_processing_cancelled" name="Contract cancelled">
       <bpmn2:incoming>flow_contract_cancelled</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:sequenceFlow id="flow_contract_cancelled" name="" sourceRef="service_cancel_contract_processing" targetRef="event_processing_cancelled"/>
-    <bpmn2:boundaryEvent id="processing_error" name="Processing errors &#xD;&#xA;occured" attachedToRef="service_process_contract_automatically">
+    <bpmn2:boundaryEvent id="processing_error" name="Processing errors &#10;occured" attachedToRef="service_process_contract_automatically">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-      <bpmn2:errorEventDefinition id="ErrorEventDefinition_1" errorRef="Error_1"/>
+      <bpmn2:errorEventDefinition id="ErrorEventDefinition_1" errorRef="Error_1" />
     </bpmn2:boundaryEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="processing_error" targetRef="task_process_contract_manually"/>
+    <bpmn2:sequenceFlow id="flow_start_load" name="" sourceRef="start_process" targetRef="service_load_contract_data" />
+    <bpmn2:sequenceFlow id="flow_contract_processed" name="" sourceRef="join_contract_processed_path" targetRef="event_contract_processed" />
+    <bpmn2:sequenceFlow id="flow_load_possible" name="" sourceRef="service_load_contract_data" targetRef="exclusive_is_processing_automatically" />
+    <bpmn2:sequenceFlow id="flow_automatic_processing_yes" name="yes" sourceRef="exclusive_is_processing_automatically" targetRef="service_process_contract_automatically">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">#{isAutomaticProcessing}</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="flow_automatic_processing_no" name="no" sourceRef="exclusive_is_processing_automatically" targetRef="task_process_contract_manually" />
+    <bpmn2:sequenceFlow id="flow_automatic_succeeds" name="" sourceRef="service_process_contract_automatically" targetRef="join_contract_processed_path" />
+    <bpmn2:sequenceFlow id="flow_is_processed_yes" name="yes" sourceRef="exclusive_is_processed" targetRef="join_contract_processed_path" />
+    <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="processing_error" targetRef="task_process_contract_manually" />
+    <bpmn2:sequenceFlow id="flow_manually_is_processed" name="" sourceRef="task_process_contract_manually" targetRef="exclusive_is_processed" />
+    <bpmn2:sequenceFlow id="flow_is_processed_no" name="no" sourceRef="exclusive_is_processed" targetRef="service_cancel_contract_processing">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">#{processingErrorsPresent}</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="flow_contract_cancelled" name="" sourceRef="service_cancel_contract_processing" targetRef="event_processing_cancelled" />
+    <bpmn2:userTask id="task_process_contract_manually" name="Process&#10;contract&#10;manually" camunda:formKey="processContractManually.xhtml">
+      <bpmn2:incoming>flow_automatic_processing_no</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:outgoing>flow_manually_is_processed</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:serviceTask id="service_cancel_contract_processing" name="Cancel&#10;contract&#10;processing" camunda:expression="#{simpleProcessAdapter.cancelProcessing()}">
+      <bpmn2:incoming>flow_is_processed_no</bpmn2:incoming>
+      <bpmn2:outgoing>flow_contract_cancelled</bpmn2:outgoing>
+    </bpmn2:serviceTask>
   </bpmn2:process>
-  <bpmn2:error id="Error_1" errorCode="errorProcessAutomaticallyFailed" name="AutomaticProcessingFails"/>
+  <bpmn2:error id="Error_1" name="AutomaticProcessingFails" errorCode="errorProcessAutomaticallyFailed" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="_Collaboration_3">
       <bpmndi:BPMNShape id="_BPMNShape_Participant_3" bpmnElement="simple_process" isHorizontal="true">
-        <dc:Bounds height="385.0" width="1009.0" x="0.0" y="24.0"/>
+        <dc:Bounds x="58" y="40" width="1009" height="385" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_5" bpmnElement="start_process">
-        <dc:Bounds height="36.0" width="36.0" x="73.0" y="105.0"/>
+        <dc:Bounds x="131" y="121" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="38.0" width="65.0" x="59.0" y="148.0"/>
+          <dc:Bounds x="129" y="164" width="42" height="25" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_EndEvent_8" bpmnElement="event_contract_processed">
-        <dc:Bounds height="36.0" width="36.0" x="900.0" y="105.0"/>
+        <dc:Bounds x="958" y="121" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="22.0" width="119.0" x="859.0" y="146.0"/>
+          <dc:Bounds x="954" y="162" width="51" height="26" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="flow_start_load" sourceElement="_BPMNShape_StartEvent_5" targetElement="_BPMNShape_ServiceTask_7">
-        <di:waypoint xsi:type="dc:Point" x="109.0" y="123.0"/>
-        <di:waypoint xsi:type="dc:Point" x="152.0" y="123.0"/>
+        <di:waypoint xsi:type="dc:Point" x="167" y="139" />
+        <di:waypoint xsi:type="dc:Point" x="210" y="139" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="131.0" y="123.0"/>
+          <dc:Bounds x="192" y="139" width="0" height="0" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_ServiceTask_7" bpmnElement="service_load_contract_data">
-        <dc:Bounds height="80.0" width="100.0" x="152.0" y="83.0"/>
+        <dc:Bounds x="210" y="99" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="flow_load_possible" sourceElement="_BPMNShape_ServiceTask_7" targetElement="_BPMNShape_ExclusiveGateway_6">
-        <di:waypoint xsi:type="dc:Point" x="252.0" y="123.0"/>
-        <di:waypoint xsi:type="dc:Point" x="289.0" y="123.0"/>
+        <di:waypoint xsi:type="dc:Point" x="310" y="139" />
+        <di:waypoint xsi:type="dc:Point" x="347" y="139" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="268.0" y="123.0"/>
+          <dc:Bounds x="329" y="139" width="0" height="0" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_ExclusiveGateway_6" bpmnElement="exclusive_is_processing_automatically" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="289.0" y="98.0"/>
+        <dc:Bounds x="347" y="114" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="54.0" width="79.0" x="276.0" y="46.0"/>
+          <dc:Bounds x="347" y="62" width="54" height="38" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="flow_automatic_processing_yes" sourceElement="_BPMNShape_ExclusiveGateway_6" targetElement="_BPMNShape_ServiceTask_8">
-        <di:waypoint xsi:type="dc:Point" x="339.0" y="123.0"/>
-        <di:waypoint xsi:type="dc:Point" x="416.0" y="124.0"/>
+        <di:waypoint xsi:type="dc:Point" x="397" y="139" />
+        <di:waypoint xsi:type="dc:Point" x="474" y="140" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="22.0" width="27.0" x="340.0" y="123.0"/>
+          <dc:Bounds x="403" y="139" width="18" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_ServiceTask_8" bpmnElement="service_process_contract_automatically">
-        <dc:Bounds height="80.0" width="100.0" x="416.0" y="84.0"/>
+        <dc:Bounds x="474" y="100" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="flow_automatic_succeeds" sourceElement="_BPMNShape_ServiceTask_8" targetElement="_BPMNShape_ExclusiveGateway_7">
-        <di:waypoint xsi:type="dc:Point" x="516.0" y="124.0"/>
-        <di:waypoint xsi:type="dc:Point" x="595.0" y="123.0"/>
+        <di:waypoint xsi:type="dc:Point" x="574" y="140" />
+        <di:waypoint xsi:type="dc:Point" x="653" y="139" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="538.0" y="124.0"/>
+          <dc:Bounds x="599" y="140" width="0" height="0" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_ExclusiveGateway_7" bpmnElement="join_contract_processed_path" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="595.0" y="98.0"/>
+        <dc:Bounds x="653" y="114" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="0.0" width="0.0" x="620.0" y="153.0"/>
+          <dc:Bounds x="678" y="169" width="0" height="0" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="flow_contract_processed" sourceElement="_BPMNShape_ExclusiveGateway_7" targetElement="_BPMNShape_EndEvent_8">
-        <di:waypoint xsi:type="dc:Point" x="645.0" y="123.0"/>
-        <di:waypoint xsi:type="dc:Point" x="900.0" y="123.0"/>
+        <di:waypoint xsi:type="dc:Point" x="703" y="139" />
+        <di:waypoint xsi:type="dc:Point" x="958" y="139" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="772.0" y="123.0"/>
+          <dc:Bounds x="833" y="139" width="0" height="0" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_UserTask_5" bpmnElement="task_process_contract_manually">
-        <dc:Bounds height="80.0" width="100.0" x="416.0" y="276.0"/>
+        <dc:Bounds x="494" y="291" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="flow_automatic_processing_no" sourceElement="_BPMNShape_ExclusiveGateway_6" targetElement="_BPMNShape_UserTask_5">
-        <di:waypoint xsi:type="dc:Point" x="314.0" y="148.0"/>
-        <di:waypoint xsi:type="dc:Point" x="314.0" y="316.0"/>
-        <di:waypoint xsi:type="dc:Point" x="416.0" y="316.0"/>
+        <di:waypoint xsi:type="dc:Point" x="372" y="164" />
+        <di:waypoint xsi:type="dc:Point" x="372" y="331" />
+        <di:waypoint xsi:type="dc:Point" x="494" y="331" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="22.0" width="20.0" x="308.0" y="163.0"/>
+          <dc:Bounds x="374" y="178.8720238095238" width="13" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_ExclusiveGateway_8" bpmnElement="exclusive_is_processed" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="595.0" y="290.0"/>
+        <dc:Bounds x="653" y="306" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="22.0" width="87.0" x="577.0" y="345.0"/>
+          <dc:Bounds x="647" y="361" width="69" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="flow_manually_is_processed" sourceElement="_BPMNShape_UserTask_5" targetElement="_BPMNShape_ExclusiveGateway_8">
-        <di:waypoint xsi:type="dc:Point" x="516.0" y="316.0"/>
-        <di:waypoint xsi:type="dc:Point" x="595.0" y="315.0"/>
+        <di:waypoint xsi:type="dc:Point" x="594" y="331" />
+        <di:waypoint xsi:type="dc:Point" x="653" y="331" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="538.0" y="316.0"/>
+          <dc:Bounds x="624" y="316" width="0" height="0" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="flow_is_processed_yes" sourceElement="_BPMNShape_ExclusiveGateway_8" targetElement="_BPMNShape_ExclusiveGateway_7">
-        <di:waypoint xsi:type="dc:Point" x="620.0" y="290.0"/>
-        <di:waypoint xsi:type="dc:Point" x="620.0" y="148.0"/>
+        <di:waypoint xsi:type="dc:Point" x="678" y="306" />
+        <di:waypoint xsi:type="dc:Point" x="678" y="164" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="22.0" width="27.0" x="593.0" y="261.0"/>
+          <dc:Bounds x="656" y="277" width="18" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_ServiceTask_9" bpmnElement="service_cancel_contract_processing">
-        <dc:Bounds height="80.0" width="100.0" x="695.0" y="275.0"/>
+        <dc:Bounds x="788" y="291" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="flow_is_processed_no" sourceElement="_BPMNShape_ExclusiveGateway_8" targetElement="_BPMNShape_ServiceTask_9">
-        <di:waypoint xsi:type="dc:Point" x="645.0" y="315.0"/>
-        <di:waypoint xsi:type="dc:Point" x="695.0" y="315.0"/>
+        <di:waypoint xsi:type="dc:Point" x="703" y="331" />
+        <di:waypoint xsi:type="dc:Point" x="788" y="331" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="22.0" width="20.0" x="655.0" y="290.0"/>
+          <dc:Bounds x="735" y="306" width="13" height="13" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_EndEvent_9" bpmnElement="event_processing_cancelled">
-        <dc:Bounds height="36.0" width="36.0" x="900.0" y="297.0"/>
+        <dc:Bounds x="958" y="313" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="22.0" width="114.0" x="861.0" y="338.0"/>
+          <dc:Bounds x="952" y="354" width="48" height="25" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="flow_contract_cancelled" sourceElement="_BPMNShape_ServiceTask_9" targetElement="_BPMNShape_EndEvent_9">
-        <di:waypoint xsi:type="dc:Point" x="795.0" y="315.0"/>
-        <di:waypoint xsi:type="dc:Point" x="900.0" y="315.0"/>
+        <di:waypoint xsi:type="dc:Point" x="888" y="331" />
+        <di:waypoint xsi:type="dc:Point" x="958" y="331" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="6.0" width="6.0" x="817.0" y="315.0"/>
+          <dc:Bounds x="923" y="316" width="0" height="0" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_BoundaryEvent_2" bpmnElement="processing_error">
-        <dc:Bounds height="36.0" width="36.0" x="468.0" y="146.0"/>
+        <dc:Bounds x="526" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="499" y="198" width="90" height="25" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_1" sourceElement="_BPMNShape_BoundaryEvent_2" targetElement="_BPMNShape_UserTask_5">
-        <di:waypoint xsi:type="dc:Point" x="486.0" y="182.0"/>
-        <di:waypoint xsi:type="dc:Point" x="486.0" y="229.0"/>
-        <di:waypoint xsi:type="dc:Point" x="466.0" y="229.0"/>
-        <di:waypoint xsi:type="dc:Point" x="466.0" y="276.0"/>
+        <di:waypoint xsi:type="dc:Point" x="544" y="198" />
+        <di:waypoint xsi:type="dc:Point" x="544" y="291" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="559" y="244.5" width="0" height="0" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
